@@ -1,1 +1,1 @@
-// mock Jest functions
+// mock Jest functions for api requests

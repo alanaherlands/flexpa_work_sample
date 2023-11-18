@@ -1,1 +1,1 @@
-// Jest unit tests here for api requests
+// Jest unit tests for api requests
