@@ -1,5 +1,5 @@
-// create get request - get access token
+// get request - get access token
 
-// create get request - get patient ID
+// get request - get patient ID
 
-// create get request - get ExplanationOfBenefit
+// get request - get ExplanationOfBenefit

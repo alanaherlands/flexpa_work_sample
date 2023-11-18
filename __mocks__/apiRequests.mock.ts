@@ -1,1 +1,1 @@
-// create mock Jest functions here
+// mock Jest functions
