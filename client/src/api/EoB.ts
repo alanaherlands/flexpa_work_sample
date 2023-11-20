@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-// import type of data if I choose to create models
+import type { Data } from '../types';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const eobHandler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     try {
         // validate method
         if (req.method !== 'GET') {
-            throw new Error('Invalid request method');
+            res.status(400).json({ data: 'Invalid request method' });
+            return;
         }
 
         // extract access token and patient ID
@@ -17,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         const flexpaApiResponse = await fetch(requestUrl, {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer ${accessToken}',
+                'Authorization': `Bearer ${accessToken}`,
             },
         });
 
@@ -34,8 +35,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ data: 'Internal Server Error' });
+        res.status(500).json({ data: 'Error parsing JSON in API response' });
     }
 };
 
-export default handler;
+export default eobHandler;

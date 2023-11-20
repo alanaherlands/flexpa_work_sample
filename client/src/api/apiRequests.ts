@@ -13,8 +13,8 @@ const getAccessToken = async (publicToken: string): Promise<string | null> => {
         throw new Error('Failed to obtain access token')
     }
 
-    const data = await response.json();
-    return data.data.access_token;
+    const exchangeTokenData = await response.json();
+    return exchangeTokenData.data.access_token;
   } catch (error) {
     console.error(error);
     return null;
@@ -36,14 +36,15 @@ const getPatientId = async (accessToken: string): Promise<string | null> => {
         throw new Error('Failed to obtain patient ID');
     }
 
-    const data = await response.json();
+    const introspectTokenData = await response.json();
     const regex = new RegExp('([^\/]+$)');
-    const patientId = data.data.sub && data.data.sub.match(regex)[0];
+    const patientId = introspectTokenData.data.sub && introspectTokenData.data.sub.match(regex)[0];
     return patientId || null;
-} catch (error) {
+  } catch (error) {
     console.error(error);
     return null;
-}
+  }
+};
 
 // Get request - get Explanation Of Benefit
 const getExplanationOfBenefit = async(
@@ -63,12 +64,16 @@ const getExplanationOfBenefit = async(
             throw new Error('Failed to obtain Explanation of Benefit data');
         }
 
-        const data = await response.json();
-        return data.data || null;
+        const eobData = await response.json();
+        return eobData.data || null;
     } catch (error) {
         console.error(error);
         return null;
     }
 };
 
-export { getAccessToken, getPatientId, getExplanationOfBenefit };
+module.exports = { 
+    getAccessToken, 
+    getPatientId, 
+    getExplanationOfBenefit
+};

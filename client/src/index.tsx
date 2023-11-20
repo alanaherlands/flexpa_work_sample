@@ -69,10 +69,10 @@ const Home = () => {
 
   try {
     // retrieve EoB data using patient ID and access token
-    const data = await getExplanationOfBenefit(patientId, accessToken);
+    const eobData = await getExplanationOfBenefit(patientId, accessToken);
     // if data is obtained, set patient data state
-    if (data) {
-        setPatientData(data);
+    if (eobData) {
+        setPatientData(eobData);
     }
   } catch (error) {
     // handle errors during data retrieval
@@ -99,10 +99,6 @@ const Home = () => {
         Downloader
       </h1>
 
-      <h1 className={styles.title}>
-      ⚕️
-      </h1>
-
       {pageLoading ? null : (
         <p className={styles.description}>
           To retrieve your data:
@@ -112,17 +108,21 @@ const Home = () => {
       <br />
 
       <div className={styles.column}>
-        <Loader
-          loading={pageLoading}
-          text={!patientId ? 'Link your health payer' : 'Download your data'}
-          onClick={!patientId ? handleLinkPayer : handleGetData}
-        />
+        <button
+           onClick={!patientId ? handleLinkPayer : handleGetData}
+           disabled={pageLoading}
+        >
 
-        <ErrorMessage displayError={pageError} />
+          {!patientId ? 'Link your health payer' : 'Download your data'}
+        </button>
 
-        <PatientDataViewer patientData={patientData} />
-      </div>
-    </main>
+          {pageError && <p>Something went wrong</p>}
+
+          {Object.keys(patientData).length !== 0 && (
+            <pre>{JSON.stringify(patientData, null, 2)}</pre>
+          )}
+        </div>
+      </main>
 
     <footer className={styles.footer}>
       <a
