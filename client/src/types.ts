@@ -1,5 +1,5 @@
-type Data = {
+type ApiResponse = {
     data: string;
 };
 
-export type { Data };
+export type { ApiResponse };

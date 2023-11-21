@@ -37,8 +37,11 @@ const getPatientId = async (accessToken: string): Promise<string | null> => {
     }
 
     const introspectTokenData = await response.json();
-    const regex = new RegExp('([^\/]+$)');
-    const patientId = introspectTokenData.data.sub && introspectTokenData.data.sub.match(regex)[0];
+
+    // use URL constructor to extract the pathname
+    const url = new URL(introspectTokenData.data.sub)
+    // extract last part of the pathname
+    const patientId = url.pathname.split('/').pop();
     return patientId || null;
   } catch (error) {
     console.error(error);
@@ -61,10 +64,11 @@ const getExplanationOfBenefit = async(
         });
 
         if (!response.ok) {
-            throw new Error('Failed to obtain Explanation of Benefit data');
+            throw new Error('Failed to obtain Explanation of Benefit data.');
         }
-
+        // parse JSON data from response
         const eobData = await response.json();
+        // return data property from parsed JSON or null if data is not present
         return eobData.data || null;
     } catch (error) {
         console.error(error);

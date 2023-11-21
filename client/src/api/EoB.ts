@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import type { Data } from '../types';
+import type { ApiResponse } from '../types';
 
-const eobHandler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+const eobHandler = async (req: NextApiRequest, res: NextApiResponse<ApiResponse>) => {
     try {
         // validate method
         if (req.method !== 'GET') {
