@@ -19,6 +19,7 @@ const eobHandler = async (req: NextApiRequest, res: NextApiResponse<ApiResponse>
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
+                'X-Flexpa-Raw': 'true'
             },
         });
 
@@ -33,7 +34,7 @@ const eobHandler = async (req: NextApiRequest, res: NextApiResponse<ApiResponse>
             const flexpaApiData = await flexpaApiResponse.json();
             res.json({ data: flexpaApiData });
         }
-    } catch (error) {
+    } catch (error: any) {
         console.error(error.message);
         res.status(500).json({ data: 'Error parsing JSON in API response' });
     }

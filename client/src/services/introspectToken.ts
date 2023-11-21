@@ -12,7 +12,7 @@ const makeFlexpaRequest = async (url: string, options: RequestInit): Promise<Res
     }
 
     return response;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(`Error making Flexpa API request: ${error.message}`);
   }
 };
@@ -21,7 +21,7 @@ const makeFlexpaRequest = async (url: string, options: RequestInit): Promise<Res
 const parseJsonOrError = async (response: Response): Promise<Record<string, unknown>> => {
   try {
     return await response.json();
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(`Error parsing JSON in API response: ${error.message}`);
   }
 };
@@ -57,11 +57,11 @@ const handler = async(req: NextApiRequest, res: NextApiResponse<ApiResponse>) =>
 
       // success parsing JSON
       res.json({ data: responseData });
-    } catch (error) {
+    } catch (error: any) {
       // error parsing JSON
       res.status(500).json({ data: error.message });
     }
-  } catch (error) {
+  } catch (error: any) {
     // handle general errors
     console.error(error.message);
     res.status(500).json({ data: 'Internal Server Error' });

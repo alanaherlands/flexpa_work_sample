@@ -1,5 +1,9 @@
 type ApiResponse = {
-    data: string;
+    data: string | Record<string, unknown>;
 };
 
-export type { ApiResponse };
+type ExplanationOfBenefitComponentProps = {
+    data: object;
+}
+
+export type { ApiResponse, ExplanationOfBenefitComponentProps };

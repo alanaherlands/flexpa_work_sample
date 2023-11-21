@@ -3,10 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchDataFromFlexpa } from './flexpaService';
 import { ApiResponse } from '../types';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ApiResponse>
-) {
+const handler = async(req: NextApiRequest, res: NextApiResponse<ApiResponse>) => {
   try {
     // validate request method
     if (req.method !== 'POST') {
