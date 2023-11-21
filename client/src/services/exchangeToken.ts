@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchDataFromFlexpa } from '../../../services/flexpaService';
-import { ApiResponse } from '../../../types';
+import { fetchDataFromFlexpa } from './flexpaService';
+import { ApiResponse } from '../types';
 
 export default async function handler(
   req: NextApiRequest,
