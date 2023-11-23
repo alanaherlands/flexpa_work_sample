@@ -14,52 +14,66 @@ const Home = () => {
     const [pageError, setPageError] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
 
-    // useEffect hook for component initialization
-    useEffect(() => {
-      const initFlexpaLink = async () => {
-        try {
-          // initialize FlexpaLink and obtain a public token
-          const publicToken = await new Promise((resolve, reject) => {
-            FlexpaLink.create({
-              publishableKey: process.env.NEXT_PUBLIC_PUBLISHABLE_KEY ?? '',
-              onSuccess: resolve,
-              onError: reject,
-            });
-        });
-      
-        setPageLoading(true);
-        // obtain access token using public token
+    const initializeFlexpaLink = async (publicToken: string) => {
+      try {
+
         const accessToken = await getAccessToken(publicToken);
-          // if access token obtained, set state variables and handle patient ID
-          if (accessToken) {
-            setAccessToken(accessToken);
-
-            const patientId = await getPatientId(accessToken);
-
-            if (patientId) {
-              setPatientId(patientId);
-              setPageError(false);
-            }
+    
+        if (accessToken) {
+          setAccessToken(accessToken);
+          const patientId = await getPatientId(accessToken);
+    
+          if (patientId) {
+            setPatientId(patientId);
+            setPageLoading(false);
+            setPageError(false);
+          } else {
+            setPageError(true);
+          }
+        } else {
+          setPageError(true);
         }
-      
-        setPageLoading(false);
       } catch (error) {
         console.error(error);
         setPageError(true);
+      } finally {
         setPageLoading(false);
       }
     };
-    // call initiFlexpaLink function on component mount
-    initFlexpaLink();
-  }, []); // empty dependency array so effect runs only once on mount
+    
+    useEffect(() => {
+      const runFlexpaLink = async () => {
+        try {
+          // run on client-side only
+          await new Promise<void>((resolve, reject) => {
+            FlexpaLink.create({
+              publishableKey: process.env.NEXT_PUBLIC_PUBLISHABLE_KEY ?? '',
+              onSuccess: async (publicToken) => {
+                await initializeFlexpaLink(publicToken);
+                resolve();
+              },
+            });
+          });
+        } catch (error) {
+          console.error(error);
+          setPageError(true);
+          setPageLoading(false);
+        }
+      };
+    
+      // run the initialization function on component mount
+      runFlexpaLink();
+    }, []);
   
   // event handler for linking payer
   const handleLinkPayer = () => {
     // set page loading state to true, reset error state, and open FlexpaLink
     setPageLoading(true);
     setPageError(false);
-    // Open the FlexpaLink instance
-    FlexpaLink.open();
+    // Check if FlexpaLink is initialized before opening
+    if (!pageLoading && !pageError) {
+      FlexpaLink.open();
+    }
 };
   
   // event handler for getting data
