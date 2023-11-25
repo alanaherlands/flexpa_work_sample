@@ -4,10 +4,10 @@ const fetchMock = jest.fn();
 // mock the fetch function
 jest.mock('node-fetch', () => fetchMock);
 
-// import module to get access to the original implementation
+// import module to get access to original implementation
 const realApiRequests = jest.requireActual('./apiRequests');
 
-// mock the implementation of the functions
+// mock implementation of the functions
 const mockGetAccessToken = jest.fn();
 const mockGetPatientId = jest.fn();
 const mockGetExplanationOfBenefit = jest.fn();

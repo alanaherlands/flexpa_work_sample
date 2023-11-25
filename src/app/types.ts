@@ -6,4 +6,10 @@ type ExplanationOfBenefitComponentProps = {
     data: object;
 }
 
-export type { ApiResponse, ExplanationOfBenefitComponentProps };
+interface ExchangeTokenResponse {
+    data: {
+      access_token: string;
+    };
+  }
+
+export type { ApiResponse, ExplanationOfBenefitComponentProps, ExchangeTokenResponse };

@@ -4,7 +4,7 @@ import styles from '../src/styles/Home.module.css'
 import FlexpaLink from '../node_modules/@flexpa/link';
 import EobComponent from '../src/app/client/components/eobDisplay.tsx';
 import { useState, useEffect } from 'react';
-import { getAccessToken, getPatientId, getExplanationOfBenefit } from '../src/app/client/services/apiRequests.ts';
+import { getAccessToken, getPatientId, getExplanationOfBenefit } from './api/apiRequests.ts';
 
 const Home = () => {
     // declare and initialize state variables

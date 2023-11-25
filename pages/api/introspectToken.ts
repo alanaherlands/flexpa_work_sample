@@ -1,6 +1,5 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { ApiResponse } from '../types';
+import type { ApiResponse } from '/Users/andrewherlands/flexpa_work_sample/src/app/types.ts';
 
 // handle the Flexpa API request
 const makeFlexpaRequest = async (url: string, options: RequestInit): Promise<Response> => {
