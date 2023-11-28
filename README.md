@@ -14,11 +14,18 @@ pnpm dev
 bun dev
 ```
 
+Then, run the proxy server;
+```bash
+npm run proxy
+# or
+yarn proxy
+# or
+pnpm proxy
+# or
+bun proxy
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## Prerequisities
 
@@ -27,6 +34,6 @@ Authenticate with the test Flexpa API server:
 2. Retrieve a set of test API keys via the portal
 3. Load your test API keys into a new file called `.env.local`:
 ```bash
-NEXT_PUBLIC_PUBLISHABLE_KEY=<your-publishable-key>
-SECRET_KEY=<your-secret-key>
+NEXT_PUBLIC_PUBLISHABLE_KEY=your-publishable-key
+SECRET_KEY=your-secret-key
 ```
