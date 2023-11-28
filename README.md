@@ -37,3 +37,8 @@ Authenticate with the test Flexpa API server:
 NEXT_PUBLIC_PUBLISHABLE_KEY=your-publishable-key
 SECRET_KEY=your-secret-key
 ```
+4. Create two env variables for access to the Flexpa API in this same file `.env.local`:
+```bash
+NEXT_PUBLIC_FLEXPA_PUBLIC_API_BASE_URL=https://api.flexpa.com
+FLEXPA_PUBLIC_API_BASE_URL=https://api.flexpa.com
+```
