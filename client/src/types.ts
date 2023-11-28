@@ -1,3 +1,5 @@
+// types
+
 type ApiResponse = {
     data?: string | Record<string, unknown>;
     success: boolean;

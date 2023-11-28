@@ -28,7 +28,7 @@ router.post('/', async (req: Request, res: Response) => {
           secret_key: process.env.SECRET_KEY,
         }),
       });
-      // const jsonResponse = await res.json();
+
       const { access_token: accessToken, expires_in: expiresIn } = (await resp.json()) as ExchangeTokenResponse;
   
       res.send({ accessToken, expiresIn });

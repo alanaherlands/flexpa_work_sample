@@ -2,7 +2,7 @@ import { Bundle, FhirResource } from 'fhir/r4';
 import fetch from 'node-fetch';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// fetch again if data not loaded in the cache
+// fetch retry if data not loaded in the cache
 const fetchWithRetry = async (url: string, authorization: string, maxRetries = 10) => {
   let retries = 0;
   let delay = 1;
@@ -24,7 +24,7 @@ const fetchWithRetry = async (url: string, authorization: string, maxRetries = 1
       const retryAfter = response.headers.get('Retry-After') || delay;
       await new Promise((resolve) => setTimeout(resolve, Number(retryAfter) * 1000));
       retries++;
-      delay *= 2; // Double the delay for exponential backoff
+      delay *= 2;
     } catch (err) {
       console.log(`Error fetching ${url}: ${err}`);
       throw err;

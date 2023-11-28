@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { ApiResponse } from '/Users/andrewherlands/flexpa_work_sample/client/src/types.ts';
 
+// explanation of benefit handler
 const eobHandler = async (req: NextApiRequest, res: NextApiResponse<ApiResponse>) => {
     try {
         // validate method

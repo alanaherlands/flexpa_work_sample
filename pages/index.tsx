@@ -143,15 +143,12 @@ const Home = () => {
           {pageError && <p>Oops, something went wrong</p>}
 
           <div>
-            { Object.keys(patientData).length !== 0 ? (
+            (patientId && accessToken && { Object.keys(patientData).length !== 0 ? (
               <JsonViewer value={patientData}/>
             ) : (
               null
-            ) }
+            ) })
           </div>
-
-          {/* {patientId && accessToken && (<EobComponent data={patientData}/>)} */}
-
         </div>
       </main>
 

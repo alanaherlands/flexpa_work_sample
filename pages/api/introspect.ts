@@ -25,7 +25,7 @@ const parseJsonOrError = async (response: Response): Promise<Record<string, unkn
   }
 };
 
-const handler = async(req: NextApiRequest, res: NextApiResponse<ApiResponse>) => {
+const introspectHandler = async(req: NextApiRequest, res: NextApiResponse<ApiResponse>) => {
   try {
     // validate request method
     if (req.method !== 'POST') {
@@ -67,4 +67,4 @@ const handler = async(req: NextApiRequest, res: NextApiResponse<ApiResponse>) =>
   }
 }
 
-export { makeFlexpaRequest, parseJsonOrError, handler };
+export { makeFlexpaRequest, parseJsonOrError, introspectHandler };

@@ -1,4 +1,4 @@
-// Get request - get access token
+// Post request: get access token
 const getAccessToken = async (publicToken: string): Promise<string | null> => {
     try {
       const { href } = new URL('http://localhost:9000/');
@@ -33,7 +33,7 @@ const getAccessToken = async (publicToken: string): Promise<string | null> => {
     }
   };
 
-// Get request - get patient ID
+// Post request: get patient ID
 const getPatientId = async (accessToken: string): Promise<string | null> => {
     try {
       const response = await fetch("/link/introspect", {

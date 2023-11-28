@@ -9,6 +9,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 9000;
 
+// create proxy to api
 const proxy = createProxyMiddleware({
     target: 'https://api.flexpa.com',
     changeOrigin: true,
