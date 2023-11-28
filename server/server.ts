@@ -1,96 +1,117 @@
-const express = require('express');
-import fetch from 'node-fetch';
-import { getAccessToken, getPatientId, getExplanationOfBenefit } from '../pages/api/apiRequests';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { ExchangeTokenResponse } from '../src/app/types';
-const app = express();
-const port = process.env.PORT || 3001;
-const secretKey: string = process.env.SECRET_KEY || '';
+// import express from "express";
+// import fetch from 'node-fetch';
+// import { getAccessToken, getPatientId, getExplanationOfBenefit } from '../pages/api/apiRequests';
+// import type { NextApiRequest, NextApiResponse } from 'next';
+// import { ExchangeTokenResponse } from '../client/src/types';
+// // const { createProxyMiddleware } = require('http-proxy-middleware');
+// const cors = require('cors');
+// const bodyParser = require('body-parser');
+// require('dotenv').config();
 
-// middleware to parse JSON requests
-app.use(express.json());
+// const app = express();
+// const port = process.env.PORT || 9000;
 
-// route for exchanging tokens
-app.post("/link/exchange", async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const publicToken = req.body.publicToken;
+// app.use(cors());
+// app.use(bodyParser.json());
+// // middleware to parse JSON requests
+// app.use(express.json());
 
-    // Exchange public token for access token
-    const exchangeResponse = await fetch('https://api.flexpa.com/link/exchange', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        public_token: publicToken,
-        secret_key: secretKey,
-      }),
-    });
+// // // proxy for external API
+// // app.use(
+// //   '/link/exchange',
+// //   cors(),
+// //   createProxyMiddleware({
+// //     target: process.env.FLEXPA_PUBLIC_API_BASE_URL,
+// //     changeOrigin: true,
+// //     pathRewrite: { '^/link/exchange': '' },
+// //   })
+// // );
 
-    if (!exchangeResponse.ok) {
-      throw new Error(`Failed to exchange tokens: ${exchangeResponse.statusText}`);
-    }
+// // route for exchanging tokens
+// app.post("/link/exchange", async (req: NextApiRequest, res: NextApiResponse) => {
+//   const { publicToken } = req.body;
 
-    const exchangeTokenData = (await exchangeResponse.json()) as ExchangeTokenResponse;
+//   if (!publicToken) {
+//     return res.status(400).send("Invalid Flexpa public token");
+//   };
+//   console.log('Process Environment:', process.env);
+//   console.log("FLEXPA_PUBLIC_API_BASE_URL:", process.env.FLEXPA_PUBLIC_API_BASE_URL);
 
-    const accessToken = await getAccessToken(exchangeTokenData.data.access_token);
+//   if (!process.env.FLEXPA_PUBLIC_API_BASE_URL) {
+//     return res.status(500).send("Invalid public API base URL");
+//   };
 
-    res.json({ data: { access_token: accessToken } });
-  } catch (error) {
-    console.error('Error in /link/exchangeToken route:', (error as Error).message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//   try {
+//     // const href = new URL('/link/exchange', process.env.FLEXPA_PUBLIC_API_BASE_URL).href;
 
-// route for getting access token
-app.post('/link/getAccessToken', async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    // handle the request and get access token
-    const publicToken = req.body.publicToken;
-    const accessToken = await getAccessToken(publicToken);
+//     // Exchange public token for access token
+//     const exchangeResponse = await fetch("https://api.flexpa.com/link/exchange", {
+//       method: 'POST',
+//       headers: {
+//         "content-type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         public_token: publicToken,
+//         secret_key: process.env.SECRET_KEY,
+//       }),
+//     });
+//     const { access_token: accessToken, expires_in: expiresIn } = (await exchangeResponse.json()) as ExchangeTokenResponse;
+    
+//     res.send({ accessToken, expiresIn });
+//   } catch (error) {
+//     return res.status(500).send(`Error exchanging token: ${error}`);
+//   }
+// });
 
-    // send the access token in the response
-    res.json({ data: { access_token: accessToken } });
-  } catch (error) {
-    console.error('Error in /api/link/getAccessToken route:', (error as Error).message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+// // route for getting access token
+// app.post('/link/getAccessToken', async (req: NextApiRequest, res: NextApiResponse) => {
+//   try {
+//     // handle the request and get access token
+//     const publicToken = req.body.publicToken;
+//     const accessToken = await getAccessToken(publicToken);
 
-// route for getting patient ID
-app.post('/link/getPatientId', async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    // handle the request and get patient ID
-    const accessToken = req.body.accessToken;
-    const patientId = await getPatientId(accessToken);
+//     // send the access token in the response
+//     res.json({ data: { access_token: accessToken } });
+//   } catch (error) {
+//     console.error('Error in /api/link/getAccessToken route:', (error as Error).message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
-    // send the patient ID in the response
-    res.json({ data: { patientId } });
-  } catch (error) {
-    console.error('Error in /api/link/getPatientId route:', (error as Error).message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+// // route for getting patient ID
+// app.post('/link/getPatientId', async (req: NextApiRequest, res: NextApiResponse) => {
+//   try {
+//     // handle the request and get patient ID
+//     const patientId = req.query.patient;
+//     const accessToken = req.headers['access-token'];
 
-// define the route for getting Explanation of Benefit
-app.get('/link/getExplanationOfBenefit', async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    // extract parameters from the request
-    const patientId = req.query.patient as string;
-    const accessToken = req.headers['access-token'] as string;
+//     // send the patient ID in the response
+//     res.json({ data: { patientId } });
+//   } catch (error) {
+//     console.error('Error in /api/link/getPatientId route:', (error as Error).message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
-    // handle the request and get Explanation of Benefit
-    const eobData = await getExplanationOfBenefit(patientId, accessToken);
+// // define the route for getting Explanation of Benefit
+// app.get('/link/getExplanationOfBenefit', async (req: NextApiRequest, res: NextApiResponse) => {
+//   try {
+//     // extract parameters from the request
+//     const patientId = req.query.patient as string;
+//     const accessToken = req.headers['access-token'] as string;
 
-    // send the EOB data in the response
-    res.json({ data: { eobData } });
-  } catch (error) {
-    console.error('Error in /api/link/getExplanationOfBenefit route:', (error as Error).message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//     // handle the request and get Explanation of Benefit
+//     const eobData = await getExplanationOfBenefit(patientId, accessToken);
 
-// start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+//     // send the EOB data in the response
+//     res.json({ data: { eobData } });
+//   } catch (error) {
+//     console.error('Error in /api/link/getExplanationOfBenefit route:', (error as Error).message);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
+
+// // start the server
+// app.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });

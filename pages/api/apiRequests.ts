@@ -1,14 +1,18 @@
 // Get request - get access token
 const getAccessToken = async (publicToken: string): Promise<string | null> => {
     try {
-      const response = await fetch('https://api.flexpa.com/link/exchange', {
+      const { href } = new URL('http://localhost:9000/');
+      const response = await fetch(`${href}link/exchange`, {
         method: 'POST',
-        body: JSON.stringify({ publicToken }),
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ 
+          publicToken,
+        }),
       });
-  
+      
+      console.log('Flexpa Public API Base URL - ', process.env.NEXT_PUBLIC_FLEXPA_PUBLIC_API_BASE_URL);
       console.log('getAccessToken - Response:', response);
   
       if (!response.ok) {
@@ -18,6 +22,7 @@ const getAccessToken = async (publicToken: string): Promise<string | null> => {
       }
   
       const exchangeTokenData = await response.json();
+      console.log('Exchange Token Data:', exchangeTokenData);
       return exchangeTokenData.data.access_token;
     } catch (error) {
       console.error('Error in getAccessToken:', {
@@ -31,7 +36,7 @@ const getAccessToken = async (publicToken: string): Promise<string | null> => {
 // Get request - get patient ID
 const getPatientId = async (accessToken: string): Promise<string | null> => {
     try {
-      const response = await fetch('link/introspectToken', {
+      const response = await fetch("/link/introspect", {
         method: 'POST',
         headers: {
           'Access-Token': accessToken,
@@ -73,7 +78,7 @@ const getPatientId = async (accessToken: string): Promise<string | null> => {
     accessToken: string
   ): Promise<object | null> => {
     try {
-      const response = await fetch(`/api/EoB?patient=${patientId}`, {
+      const response = await fetch(`/fhir/ExplanationOfBenefit?patient=${patientId}`, {
         method: 'GET',
         headers: {
           'Access-Token': accessToken,

@@ -1,8 +1,9 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../src/styles/Home.module.css'
-import FlexpaLink from '../node_modules/@flexpa/link';
-import EobComponent from '../src/app/client/components/eobDisplay.tsx';
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from '../client/src/styles/Home.module.css';
+import FlexpaLink from '/Users/andrewherlands/flexpa_work_sample/node_modules/@flexpa/link';
+// import EobComponent from './components/eobDisplay.tsx';
+import { JsonViewer } from '@textea/json-viewer';
 import { useState, useEffect } from 'react';
 import { getAccessToken, getPatientId, getExplanationOfBenefit } from './api/apiRequests.ts';
 
@@ -124,7 +125,7 @@ const Home = () => {
     </h1>
 
         <p className={styles.description}>
-          Let's get started
+          Let&apos;s get started
         </p>
 
       <br />
@@ -141,25 +142,34 @@ const Home = () => {
 
           {pageError && <p>Oops, something went wrong</p>}
 
-          {patientId && accessToken && (<EobComponent data={patientData}/>)}
-      
+          <div>
+            { Object.keys(patientData).length !== 0 ? (
+              <JsonViewer value={patientData}/>
+            ) : (
+              null
+            ) }
+          </div>
+
+          {/* {patientId && accessToken && (<EobComponent data={patientData}/>)} */}
+
         </div>
       </main>
 
-    <footer className={styles.footer}>
-      <a
-        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by{' '}
-        <span className={styles.logo}>
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </span>
-      </a>
-    </footer>
-  </div>
-);
+      <footer className={styles.footer}>
+        <a
+          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Powered by{' '}
+          <span className={styles.logo}>
+            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+          </span>
+        </a>
+      </footer>
+
+    </div>
+  );
 };
 
 
