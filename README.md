@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Then, open a new terminal and run the proxy server;
+Then, open a new terminal and run the proxy server:
 ```bash
 npm run proxy
 # or
